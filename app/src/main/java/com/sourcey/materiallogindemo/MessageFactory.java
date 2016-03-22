@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 
 public class MessageFactory {
 
-    public void CreateMsg(String title, String msg, Context window) {
-        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(window);
+    public void CreateMsg(String title, String msg, Context context) {
+        AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
         dlgAlert.setTitle(title);
         dlgAlert.setMessage(msg);
         dlgAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
