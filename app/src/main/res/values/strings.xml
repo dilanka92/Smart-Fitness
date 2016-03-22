@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Smart Fitness</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Welcome!</string>
     <string name="action_settings">Settings</string>
     <string-array name="life_style">
         <item>Mercury</item>
