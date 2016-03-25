@@ -5,18 +5,26 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import user.User;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView userName;
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+
+        userName = (TextView) findViewById(R.id.txt_user);
+//            userName.setText(user.getName());
     }
 
     @Override

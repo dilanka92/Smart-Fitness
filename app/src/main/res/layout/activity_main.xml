@@ -32,7 +32,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="Dilanka"
+            android:text="@string/user_name"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 </ScrollView>

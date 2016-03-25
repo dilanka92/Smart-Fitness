@@ -2,6 +2,7 @@ package user;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -23,6 +24,8 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_AGE = "age";
     private static final String KEY_HEIGHT = "height";
     private static final String KEY_WEIGHT = "weight";
+
+    SQLiteDatabase db = this.getWritableDatabase();
 
     public UserDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,7 +54,6 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void createUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(KEY_EMAIL, user.getEmail());
@@ -63,6 +65,25 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 
         db.insert(TABLE_USER, null, values);
         db.close();
+    }
+
+    public boolean loginUser(User user) {
+        String userName;
+        try {
+            Cursor resultSet = db.rawQuery("select " + KEY_USER_NAME + " from " + TABLE_USER + " where " + KEY_EMAIL + " like '%" + user.getEmail() + "%' and " + KEY_PASSWORD + "='" + user.Password + "'", null);
+            resultSet.moveToFirst();
+            userName = resultSet.getString(resultSet.getColumnIndex(KEY_USER_NAME));
+            resultSet.close();
+
+            userName = userName.substring(0, 1).toUpperCase() + userName.substring(1).toLowerCase();
+            user.setName(userName);
+            return true;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
     }
 
 

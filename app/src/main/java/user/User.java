@@ -18,6 +18,15 @@ public class User {
         Age = age;
     }
 
+    public User(String password, String email) {
+        Password = password;
+        Email = email;
+    }
+
+    public User() {
+
+    }
+
     public String getName() {
         return Name;
     }

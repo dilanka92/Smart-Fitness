@@ -43,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
     Double height;
     Double weight;
 
-    UserDatabaseHandler db = new UserDatabaseHandler(this);
+
     HashPassword MD5 = new HashPassword();
 
     @Override
@@ -93,14 +93,7 @@ public class SignupActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        try {
-                            Log.d("Insert: ", "Inserting ..");
-                            db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
-                            onSignupSuccess();
-                        } catch (Exception ex) {
-                            Log.e("Error creating user", ex.toString());
-                            onSignupFailed();
-                        }
+                        registerUser();
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -177,5 +170,17 @@ public class SignupActivity extends AppCompatActivity {
 //        }
 
         return valid;
+    }
+
+    private void registerUser() {
+        UserDatabaseHandler db = new UserDatabaseHandler(this);
+        try {
+            Log.d("Insert: ", "Inserting ..");
+            db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
+            onSignupSuccess();
+        } catch (Exception ex) {
+            Log.e("Error creating user", ex.toString());
+            onSignupFailed();
+        }
     }
 }
