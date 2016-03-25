@@ -67,7 +67,7 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean loginUser(User user) {
+    public String loginUser(User user) {
         String userName;
         try {
             Cursor resultSet = db.rawQuery("select " + KEY_USER_NAME + " from " + TABLE_USER + " where " + KEY_EMAIL + " like '%" + user.getEmail() + "%' and " + KEY_PASSWORD + "='" + user.Password + "'", null);
@@ -76,12 +76,11 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
             resultSet.close();
 
             userName = userName.substring(0, 1).toUpperCase() + userName.substring(1).toLowerCase();
-            user.setName(userName);
-            return true;
+            return userName;
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            return false;
+            return null;
         }
 
     }

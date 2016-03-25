@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     String email;
     String password;
+    String userName;
 
 
     @Override
@@ -77,8 +78,6 @@ public class LoginActivity extends AppCompatActivity {
         email = _emailText.getText().toString();
         password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
-
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -109,6 +108,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        Intent intent = new Intent();
+        intent.putExtra("user", userName);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -145,9 +147,9 @@ public class LoginActivity extends AppCompatActivity {
         HashPassword MD5 = new HashPassword();
 
         Log.d("Login: ", "Validate login..");
-        boolean status = db.loginUser(new User(MD5.Hash(password), email));
+        userName = db.loginUser(new User(MD5.Hash(password), email));
 
-        if (status) {
+        if (userName != null) {
             onLoginSuccess();
         } else {
             onLoginFailed();
