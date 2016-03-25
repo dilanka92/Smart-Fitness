@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import user.HashPassword;
+import user.User;
+import user.UserDatabaseHandler;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
@@ -33,8 +36,15 @@ public class SignupActivity extends AppCompatActivity {
     @Bind(R.id.link_login)
     TextView _loginLink;
 
-    // TODO: Implement Spinner.
-//    @Bind(R.id.input_lifestyle) Spinner _input_lifestyleText;
+    String name;
+    String email;
+    String password;
+    int age;
+    Double height;
+    Double weight;
+
+    UserDatabaseHandler db = new UserDatabaseHandler(this);
+    HashPassword MD5 = new HashPassword();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +62,6 @@ public class SignupActivity extends AppCompatActivity {
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Finish the registration screen and return to the Login activity
                 finish();
             }
         });
@@ -68,30 +77,30 @@ public class SignupActivity extends AppCompatActivity {
 
         _signupButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String age = _ageText.getText().toString();
-        String height = _heightText.getText().toString();
-        String weight = _weightText.getText().toString();
+        name = _nameText.getText().toString();
+        email = _emailText.getText().toString();
+        password = _passwordText.getText().toString();
+        age = Integer.parseInt(_ageText.getText().toString());
+        height = Double.parseDouble(_heightText.getText().toString());
+        weight = Double.parseDouble(_weightText.getText().toString());
 
-//        String lifestyle = _input_lifestyleText.getSelectedItem().toString();
-
-        // TODO: Implement signup logic.
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
+                        try {
+                            Log.d("Insert: ", "Inserting ..");
+                            db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
+                            onSignupSuccess();
+                        } catch (Exception ex) {
+                            Log.e("Error creating user", ex.toString());
+                            onSignupFailed();
+                        }
                         progressDialog.dismiss();
                     }
                 }, 3000);
