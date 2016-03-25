@@ -1,4 +1,4 @@
-package com.sourcey.materiallogindemo;
+package com.sourcey.smartfitness;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
