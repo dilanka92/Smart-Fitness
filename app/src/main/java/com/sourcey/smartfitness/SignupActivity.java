@@ -1,6 +1,7 @@
 package com.sourcey.smartfitness;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -102,7 +103,9 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
+        Intent intent = new Intent();
+        intent.putExtra("user", name);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -173,14 +176,21 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        UserDatabaseHandler db = new UserDatabaseHandler(this);
         try {
+            UserDatabaseHandler db = new UserDatabaseHandler(this);
             Log.d("Insert: ", "Inserting ..");
-            db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
-            onSignupSuccess();
+            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+            boolean status = db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
+            if (!status) {
+                onSignupFailed();
+            } else {
+                onSignupSuccess();
+
+            }
         } catch (Exception ex) {
-            Log.e("Error creating user", ex.toString());
+            Log.e(TAG, "Error creating user : " + ex.toString());
             onSignupFailed();
         }
+
     }
 }

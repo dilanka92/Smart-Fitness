@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class UserDatabaseHandler extends SQLiteOpenHelper {
 
@@ -53,18 +54,25 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void createUser(User user) {
-        ContentValues values = new ContentValues();
+    public boolean createUser(User user) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_EMAIL, user.getEmail());
+            values.put(KEY_USER_NAME, user.getName());
+            values.put(KEY_PASSWORD, user.getPassword());
+            values.put(KEY_AGE, user.getAge());
+            values.put(KEY_HEIGHT, user.getHeight());
+            values.put(KEY_WEIGHT, user.getWeight());
 
-        values.put(KEY_EMAIL, user.getEmail());
-        values.put(KEY_USER_NAME, user.getName());
-        values.put(KEY_PASSWORD, user.getPassword());
-        values.put(KEY_AGE, user.getAge());
-        values.put(KEY_HEIGHT, user.getHeight());
-        values.put(KEY_WEIGHT, user.getWeight());
+            long rowInserted = db.insert(TABLE_USER, null, values);
+            db.close();
 
-        db.insert(TABLE_USER, null, values);
-        db.close();
+            return rowInserted != -1;
+
+        } catch (Exception ex) {
+            Log.e("Error creating user", ex.toString());
+            return false;
+        }
     }
 
     public String loginUser(User user) {
@@ -74,8 +82,6 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
             resultSet.moveToFirst();
             userName = resultSet.getString(resultSet.getColumnIndex(KEY_USER_NAME));
             resultSet.close();
-
-            userName = userName.substring(0, 1).toUpperCase() + userName.substring(1).toLowerCase();
             return userName;
 
         } catch (Exception ex) {
