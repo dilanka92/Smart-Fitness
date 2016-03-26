@@ -185,12 +185,10 @@ public class SignupActivity extends AppCompatActivity {
                 onSignupFailed();
             } else {
                 onSignupSuccess();
-
             }
         } catch (Exception ex) {
             Log.e(TAG, "Error creating user : " + ex.toString());
             onSignupFailed();
         }
-
     }
 }

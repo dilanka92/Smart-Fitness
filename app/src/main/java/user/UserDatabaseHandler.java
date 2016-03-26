@@ -88,8 +88,5 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
             ex.printStackTrace();
             return null;
         }
-
     }
-
-
 }
