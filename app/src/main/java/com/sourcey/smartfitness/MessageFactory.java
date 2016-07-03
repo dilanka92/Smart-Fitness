@@ -8,7 +8,6 @@ import android.util.Log;
 public class MessageFactory {
     private static final String TAG = "MessageFactory";
 
-    //Test
     public void CreateMsg(String title, String msg, Context context) {
         try {
             AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
