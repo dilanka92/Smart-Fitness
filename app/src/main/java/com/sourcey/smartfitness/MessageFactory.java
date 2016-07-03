@@ -21,7 +21,7 @@ public class MessageFactory {
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
         } catch (Exception ex) {
-            Log.e(TAG, "Error creating user : " + ex.toString());
+            Log.e(TAG, "Error creating message : " + ex.toString());
         }
     }
 }
