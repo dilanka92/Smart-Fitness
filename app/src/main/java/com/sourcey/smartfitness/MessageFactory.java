@@ -3,10 +3,13 @@ package com.sourcey.smartfitness;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 
 public class MessageFactory {
+    private static final String TAG = "MessageFactory";
 
     public void CreateMsg(String title, String msg, Context context) {
+        try {
         AlertDialog.Builder dlgAlert = new AlertDialog.Builder(context);
         dlgAlert.setTitle(title);
         dlgAlert.setMessage(msg);
@@ -17,5 +20,8 @@ public class MessageFactory {
         });
         dlgAlert.setCancelable(true);
         dlgAlert.create().show();
+        } catch (Exception ex) {
+            Log.e(TAG, "Error creating user : " + ex.toString());
+        }
     }
 }
