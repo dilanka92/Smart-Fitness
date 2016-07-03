@@ -85,7 +85,7 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
             return userName;
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e("Error login user", ex.toString());
             return null;
         }
     }
