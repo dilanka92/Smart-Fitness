@@ -1,4 +1,6 @@
 language: android
+before_install:
+ - chmod +x gradlew
 env:
   global:
     - ANDROID_TARGET=android-22
