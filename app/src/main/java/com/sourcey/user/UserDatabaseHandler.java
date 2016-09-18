@@ -1,4 +1,4 @@
-package user;
+package com.sourcey.user;
 
 import android.content.ContentValues;
 import android.content.Context;

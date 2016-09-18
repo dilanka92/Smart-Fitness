@@ -11,11 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sourcey.user.HashPassword;
+import com.sourcey.user.User;
+import com.sourcey.user.UserDatabaseHandler;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import user.HashPassword;
-import user.User;
-import user.UserDatabaseHandler;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
@@ -104,7 +105,7 @@ public class SignupActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
         Intent intent = new Intent();
-        intent.putExtra("user", name);
+        intent.putExtra("com/sourcey/user", name);
         setResult(RESULT_OK, intent);
         finish();
     }
