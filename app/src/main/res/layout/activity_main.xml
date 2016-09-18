@@ -23,7 +23,8 @@
             android:layout_toLeftOf="@+id/txt_user"
             android:layout_toStartOf="@+id/txt_user"
             android:text="@string/hello_welcome"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:ignore="RelativeOverlap,RtlHardcoded" />
 
         <TextView
             android:id="@+id/txt_user"
@@ -33,6 +34,35 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="@string/user_name"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:ignore="RtlHardcoded" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="45dp"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/btn_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check Connection" />
+
+            <EditText
+                android:id="@+id/txt_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/btn_check"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                tools:ignore="LabelFor" />
+        </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

@@ -8,7 +8,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
-        versionName '1.1'
+        versionName '1.2'
     }
     buildTypes {
         release {
@@ -25,4 +25,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile files('libs/wekaSTRIPPED.jar')
+    compile files('libs/mysql-connector-java-5.0.8-bin.jar')
 }

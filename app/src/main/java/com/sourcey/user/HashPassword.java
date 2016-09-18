@@ -1,4 +1,4 @@
-package user;
+package com.sourcey.user;
 
 import java.security.MessageDigest;
 
