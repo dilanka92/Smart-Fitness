@@ -31,16 +31,12 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    private
     @Bind(R.id.input_email)
     EditText _emailText;
-    private
     @Bind(R.id.input_password)
     EditText _passwordText;
-    private
     @Bind(R.id.btn_login)
     Button _loginButton;
-    private
     @Bind(R.id.link_signup)
     TextView _signupLink;
 
@@ -147,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
         // hash password
         HashPassword MD5 = new HashPassword();
         String hashPassword = MD5.Hash(password);
-        System.out.println("> " + hashPassword);
         new asyncLogin().execute(email, hashPassword);
     }
 
@@ -157,10 +152,7 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
         HttpURLConnection conn;
 
-        //flag 0 means get and 1 means post.(By default it is get.)
-        private asyncLogin() {
-        }
-
+        @Override
         protected void onPreExecute() {
             progressDialog.setMessage("Authenticating...");
             progressDialog.setIndeterminate(true);

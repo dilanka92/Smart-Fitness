@@ -1,7 +1,6 @@
 package com.sourcey.neuralnetwork;
 
 import android.content.Context;
-import android.os.StrictMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,27 +21,19 @@ import static com.sourcey.user.MySqlHandler.PASSWORD;
 import static com.sourcey.user.MySqlHandler.URL;
 import static com.sourcey.user.MySqlHandler.USER;
 
-/**
- * Created by Dilanka on 18/09/2016.
- */
 
 public class NeuralNetwork {
-    public final static String FILENAME = "example.save";
-    File file;
-    FileOutputStream fos;
+    private final static String FILENAME = "example.save";
+    private File file;
 
     public void train(Context context) throws Exception {
         try {
             System.out.println("Training...");
 
-
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
             Class.forName("com.mysql.jdbc.Driver").newInstance();
 
             file = new File(context.getExternalFilesDir(null), FILENAME);
-            fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(file);
 
             // load training data from database
             InstanceQuery query = new InstanceQuery();
@@ -81,7 +72,7 @@ public class NeuralNetwork {
         query.setDatabaseURL(URL);
         query.setUsername(USER);
         query.setPassword(PASSWORD);
-        query.setQuery("SELECT * FROM `male_bmr` where `Weight`=73 AND `Height`=153 AND`Age`=24");  // retrieves the same table only for simplicty reasons.
+        query.setQuery("SELECT * FROM `male_bmr` where `Weight`=73 AND `Height`=153 AND`Age`=24");
         Instances data = query.retrieveInstances();
         data.setClassIndex(4);
 
@@ -98,7 +89,7 @@ public class NeuralNetwork {
             // Instances object returned here might differ slightly from the one
             // used during training the classifier, e.g., different order of
             // nominal values, different number of attributes.
-//            Instance inst = new Instance(header.numAttributes());
+            // Instance inst = new Instance(header.numAttributes());
             Instance inst = new DenseInstance(header.numAttributes());
             inst.setDataset(header);
             for (int n = 0; n < header.numAttributes(); n++) {

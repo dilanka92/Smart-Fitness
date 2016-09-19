@@ -2,6 +2,8 @@ package com.sourcey.smartfitness;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,8 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourcey.user.HashPassword;
-import com.sourcey.user.User;
-import com.sourcey.user.UserDatabaseHandler;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,9 +50,10 @@ public class SignupActivity extends AppCompatActivity {
     String name;
     String email;
     String password;
-    int age;
     Double height;
     Double weight;
+    int age;
+    int userType = 1;
 
 
     HashPassword MD5 = new HashPassword();
@@ -178,19 +188,124 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        try {
-            UserDatabaseHandler db = new UserDatabaseHandler(this);
-            Log.d("Insert: ", "Inserting ..");
-            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-            boolean status = db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
-            if (!status) {
-                onSignupFailed();
-            } else {
-                onSignupSuccess();
+//        try {
+//            UserDatabaseHandler db = new UserDatabaseHandler(this);
+//            Log.d("Insert: ", "Inserting ..");
+//            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+//            boolean status = db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
+//            if (!status) {
+//                onSignupFailed();
+//            } else {
+//                onSignupSuccess();
+//            }
+//        } catch (Exception ex) {
+//            Log.e(TAG, "Error creating user : " + ex.toString());
+//            onSignupFailed();
+//        }
+        String hashPassword = MD5.Hash(password);
+        new asyncSignup().execute(email, hashPassword, name, String.valueOf(userType),
+                String.valueOf(age), String.valueOf(weight), String.valueOf(height));
+    }
+
+    private class asyncSignup extends AsyncTask<String, Void, String> {
+
+        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
+        HttpURLConnection conn;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Creating Account...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... arg0) {
+            try {
+                String email = arg0[0];
+                String hashPassword = arg0[1];
+                String name = arg0[2];
+                String userType = arg0[3];
+                String age = arg0[4];
+                String weight = arg0[5];
+                String height = arg0[6];
+                String link = "http://192.168.1.92/ServiceFitness/newUser.php";
+                URL url = new URL(link);
+
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000);
+                conn.setConnectTimeout(10000);
+                conn.setRequestMethod("POST");
+
+                // setDoInput and setDoOutput method depict handling of both send and receive
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                // Append parameters to URL
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("email", email)
+                        .appendQueryParameter("password", hashPassword)
+                        .appendQueryParameter("userType", userType)
+                        .appendQueryParameter("name", name)
+                        .appendQueryParameter("age", age)
+                        .appendQueryParameter("weight", weight)
+                        .appendQueryParameter("height", height);
+                String query = builder.build().getEncodedQuery();
+
+                // Open connection for sending data
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+
+                    return ("false");
+                }
+
+            } catch (Exception e) {
+                return ("false");
             }
-        } catch (Exception ex) {
-            Log.e(TAG, "Error creating user : " + ex.toString());
-            onSignupFailed();
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            System.out.println("Result --- " + result);
+
+            if (!result.equals("false")) {
+                onSignupSuccess();
+            } else {
+                onSignupFailed();
+
+            }
+
         }
     }
 }

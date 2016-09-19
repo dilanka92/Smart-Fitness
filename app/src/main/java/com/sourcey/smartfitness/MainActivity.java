@@ -2,6 +2,7 @@ package com.sourcey.smartfitness;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -36,12 +37,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
                 try {
-                    progressDialog.setIndeterminate(true);
-                    progressDialog.setMessage("Processing...");
-                    progressDialog.show();
+                    new NetworkASYNC().execute();
 
-                    predict();
-//                    progressDialog.dismiss();
                 } catch (Exception e) {
                     System.err.println("Ouch An Error");
                     e.printStackTrace();
@@ -83,17 +80,39 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void predict() {
-        try {
-            NeuralNetwork network = new NeuralNetwork();
-            network.train(MainActivity.this);
+    private void setData(String data) {
+        txtResult.setText(data);
+    }
 
-            txtResult.setText("Predicted : " + network.predict());
-        } catch (Exception e) {
-            txtResult.setText("Prediction Failed!");
-            txtResult.setTextColor(5);
-            e.printStackTrace();
+    private class NetworkASYNC extends AsyncTask<String, Void, String> {
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Predicting...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
         }
 
+        @Override
+        protected String doInBackground(String... val) {
+            try {
+                NeuralNetwork network = new NeuralNetwork();
+                network.train(MainActivity.this);
+                return String.valueOf(network.predict());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            setData(result);
+        }
     }
 }

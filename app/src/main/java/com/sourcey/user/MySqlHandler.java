@@ -10,7 +10,7 @@ public class MySqlHandler {
 //    public final static String USER = "dilanka";
 //    public final static String PASSWORD = "dilanka92";
 
-    public final static String URL = "jdbc:mysql://192.168.1.92:3306/weka";
+    public final static String URL = "jdbc:mysql://192.168.1.92:3306/smartfitness";
     public final static String USER = "itesgfinance";
     public final static String PASSWORD = "itesg@finance";
 
