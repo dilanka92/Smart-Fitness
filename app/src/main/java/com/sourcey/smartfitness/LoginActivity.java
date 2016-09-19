@@ -2,6 +2,8 @@ package com.sourcey.smartfitness;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,8 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourcey.user.HashPassword;
-import com.sourcey.user.User;
-import com.sourcey.user.UserDatabaseHandler;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,18 +31,22 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
+    private
     @Bind(R.id.input_email)
     EditText _emailText;
+    private
     @Bind(R.id.input_password)
     EditText _passwordText;
+    private
     @Bind(R.id.btn_login)
     Button _loginButton;
+    private
     @Bind(R.id.link_signup)
     TextView _signupLink;
 
-    String email;
-    String password;
-    String userName;
+    private String email;
+    private String password;
+    private String userName;
 
 
     @Override
@@ -47,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
+
             }
         });
 
@@ -61,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login() {
+    private void login() {
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -70,22 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         _loginButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
-
         email = _emailText.getText().toString();
         password = _passwordText.getText().toString();
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        loginUser();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
+        loginPost();
     }
 
 
@@ -105,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public void onLoginSuccess() {
+    private void onLoginSuccess() {
         _loginButton.setEnabled(true);
         Intent intent = new Intent();
         intent.putExtra("com/sourcey/user", userName);
@@ -113,12 +114,12 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+    private void onLoginFailed() {
+        Toast.makeText(getBaseContext(), "Login failed!", Toast.LENGTH_LONG).show();
         _loginButton.setEnabled(true);
     }
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
 
         String email = _emailText.getText().toString();
@@ -141,17 +142,106 @@ public class LoginActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void loginUser() {
-        UserDatabaseHandler db = new UserDatabaseHandler(this);
+
+    private void loginPost() {
+        // hash password
         HashPassword MD5 = new HashPassword();
+        String hashPassword = MD5.Hash(password);
+        System.out.println("> " + hashPassword);
+        new asyncLogin().execute(email, hashPassword);
+    }
 
-        Log.d("Login: ", "Validate login..");
-        userName = db.loginUser(new User(MD5.Hash(password), email));
 
-        if (userName != null) {
-            onLoginSuccess();
-        } else {
-            onLoginFailed();
+    private class asyncLogin extends AsyncTask<String, Void, String> {
+
+        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
+        HttpURLConnection conn;
+
+        //flag 0 means get and 1 means post.(By default it is get.)
+        private asyncLogin() {
+        }
+
+        protected void onPreExecute() {
+            progressDialog.setMessage("Authenticating...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... arg0) {
+            try {
+                String username = arg0[0];
+                String password = arg0[1];
+                String link = "http://192.168.1.92/ServiceFitness/index.php";
+                URL url = new URL(link);
+
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000);
+                conn.setConnectTimeout(10000);
+                conn.setRequestMethod("POST");
+
+                // setDoInput and setDoOutput method depict handling of both send and receive
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                // Append parameters to URL
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("email", username)
+                        .appendQueryParameter("password", password);
+                String query = builder.build().getEncodedQuery();
+
+                // Open connection for sending data
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+
+                    return ("false");
+                }
+
+            } catch (Exception e) {
+                return ("false");
+            }
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if (!result.equals("false")) {
+                userName = result;
+                onLoginSuccess();
+            } else {
+                onLoginFailed();
+            }
+
         }
     }
 }

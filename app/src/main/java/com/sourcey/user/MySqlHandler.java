@@ -5,10 +5,6 @@ import android.os.StrictMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-/**
- * Created by Dilanka on 18/09/2016.
- */
-
 public class MySqlHandler {
 //    public final static String URL = "jdbc:mysql://db4free.net:3306/fitness";
 //    public final static String USER = "dilanka";
@@ -18,13 +14,12 @@ public class MySqlHandler {
     public final static String USER = "itesgfinance";
     public final static String PASSWORD = "itesg@finance";
 
-    public Connection testMySql() {
+    public Connection mySqlConnection() {
         Connection connection = null;
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-//            Class.forName("com.mysql.jdbc.Driver");
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
 

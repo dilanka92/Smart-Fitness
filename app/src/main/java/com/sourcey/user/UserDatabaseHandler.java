@@ -26,7 +26,7 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_HEIGHT = "height";
     private static final String KEY_WEIGHT = "weight";
 
-    SQLiteDatabase db = this.getWritableDatabase();
+    private SQLiteDatabase db = this.getWritableDatabase();
 
     public UserDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -82,6 +82,7 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
             resultSet.moveToFirst();
             userName = resultSet.getString(resultSet.getColumnIndex(KEY_USER_NAME));
             resultSet.close();
+            db.close();
             return userName;
 
         } catch (Exception ex) {

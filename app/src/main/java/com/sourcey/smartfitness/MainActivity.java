@@ -14,11 +14,10 @@ import com.sourcey.neuralnetwork.NeuralNetwork;
 
 public class MainActivity extends AppCompatActivity {
 
-    final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
 
-    TextView userName;
-    TextView txtResult;
-    Button validate;
+    private TextView userName;
+    private TextView txtResult;
+    private Button validate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +34,14 @@ public class MainActivity extends AppCompatActivity {
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
                 try {
                     progressDialog.setIndeterminate(true);
                     progressDialog.setMessage("Processing...");
                     progressDialog.show();
 
-                    NeuralNetwork network = new NeuralNetwork();
-                    network.train(MainActivity.this);
-
-                    txtResult.setText("Predicted : " + network.predict());
-
+                    predict();
+//                    progressDialog.dismiss();
                 } catch (Exception e) {
                     System.err.println("Ouch An Error");
                     e.printStackTrace();
@@ -86,4 +83,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void predict() {
+        try {
+            NeuralNetwork network = new NeuralNetwork();
+            network.train(MainActivity.this);
+
+            txtResult.setText("Predicted : " + network.predict());
+        } catch (Exception e) {
+            txtResult.setText("Prediction Failed!");
+            txtResult.setTextColor(5);
+            e.printStackTrace();
+        }
+
+    }
 }
