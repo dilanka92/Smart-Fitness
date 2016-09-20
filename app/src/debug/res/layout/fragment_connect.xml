@@ -5,50 +5,49 @@
     android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
-        android:text="Connect"
-        android:textSize="45dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Edit fragment_connect.xml to change the appearance"
-        android:textSize="12dp" />
-
-
     <Button
         android:id="@+id/btn_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/label"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="17dp"
         android:text="Check Connection" />
 
     <EditText
         android:id="@+id/txt_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/btn_check"
         android:layout_below="@+id/btn_check"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="9dp"
         android:ems="10"
         android:inputType="textMultiLine"
         tools:ignore="LabelFor" />
-    <!--</RelativeLayout>-->
+
+    <Spinner
+        android:id="@+id/lifeStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_result"
+        android:layout_marginTop="44dp"
+        android:layout_toEndOf="@+id/btn_check"
+        android:entries="@array/life_style_array"
+        android:popupBackground="#E12929"
+        android:prompt="@string/life_style"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/lifeStyle"
+        android:layout_alignBottom="@+id/lifeStyle"
+        android:layout_alignStart="@+id/txt_result"
+        android:text="@string/life_style"
+        android:textSize="15sp"
+        tools:text="@string/life_style" />
 
 
 </RelativeLayout>

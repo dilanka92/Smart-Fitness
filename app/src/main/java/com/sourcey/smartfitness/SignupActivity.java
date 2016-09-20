@@ -188,20 +188,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-//        try {
-//            UserDatabaseHandler db = new UserDatabaseHandler(this);
-//            Log.d("Insert: ", "Inserting ..");
-//            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-//            boolean status = db.createUser(new User(name, MD5.Hash(password), email, height, weight, age));
-//            if (!status) {
-//                onSignupFailed();
-//            } else {
-//                onSignupSuccess();
-//            }
-//        } catch (Exception ex) {
-//            Log.e(TAG, "Error creating user : " + ex.toString());
-//            onSignupFailed();
-//        }
         String hashPassword = MD5.Hash(password);
         new asyncSignup().execute(email, hashPassword, name, String.valueOf(userType),
                 String.valueOf(age), String.valueOf(weight), String.valueOf(height));

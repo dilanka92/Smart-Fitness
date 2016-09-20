@@ -1,8 +1,6 @@
 package com.sourcey.smartfitness;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,20 +20,16 @@ import com.sourcey.fragment.DataModel;
 import com.sourcey.fragment.DrawerItemCustomAdapter;
 import com.sourcey.fragment.FixturesFragment;
 import com.sourcey.fragment.TableFragment;
-import com.sourcey.neuralnetwork.NeuralNetwork;
 
 public class MainActivity extends AppCompatActivity {
 
 
     Toolbar toolbar;
-    android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
+    private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private TextView userName;
-    private TextView txtResult;
-    private Button validate;
     private String[] mNavigationDrawerItemTitles;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-    private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
     @Override
@@ -44,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTitle = mDrawerTitle = getTitle();
         mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -70,23 +62,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
 
         userName = (TextView) findViewById(R.id.txt_user);
-//        txtResult = (TextView) findViewById(R.id.txt_result);
-//        validate = (Button) findViewById(R.id.btn_check);
-
-//        validate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
-//                try {
-//                    new NetworkASYNC().execute();
-//
-//                } catch (Exception e) {
-//                    System.err.println("Ouch An Error");
-//                    e.printStackTrace();
-//                }
-//                progressDialog.dismiss();
-//            }
-//        });
     }
 
     private void selectItem(int position) {
@@ -173,10 +148,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setData(String data) {
-        txtResult.setText(data);
-    }
-
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -186,35 +157,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private class NetworkASYNC extends AsyncTask<String, Void, String> {
-        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.AppTheme_Dark_Dialog);
-
-        @Override
-        protected void onPreExecute() {
-            progressDialog.setMessage("Predicting...");
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... val) {
-            try {
-                NeuralNetwork network = new NeuralNetwork();
-                network.train(MainActivity.this);
-                return String.valueOf(network.predict());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            setData(result);
-        }
-    }
 }

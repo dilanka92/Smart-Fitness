@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.sourcey.neuralnetwork.NeuralNetwork;
@@ -19,6 +20,7 @@ import com.sourcey.smartfitness.R;
 public class ConnectFragment extends Fragment {
     private TextView txtResult;
     private Button validate;
+    private Spinner lifeStyle;
 
     public ConnectFragment() {
     }
@@ -29,6 +31,7 @@ public class ConnectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_connect, container, false);
         txtResult = (TextView) rootView.findViewById(R.id.txt_result);
         validate = (Button) rootView.findViewById(R.id.btn_check);
+        lifeStyle = (Spinner) rootView.findViewById(R.id.lifeStyle);
 
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +51,7 @@ public class ConnectFragment extends Fragment {
     }
 
     private void setData(String data) {
+        data = data + String.valueOf(lifeStyle.getSelectedItem());
         txtResult.setText(data);
     }
 

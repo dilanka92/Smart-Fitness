@@ -6,11 +6,17 @@
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-
-
     <string-array name="navigation_drawer_items_array">
         <item>Meal Plan</item>
         <item>Workout Plan</item>
         <item>Change My Settings</item>
+    </string-array>
+    <string name="life_style">Choose your life style</string>
+
+    <string-array name="life_style_array">
+        <item>Sedentary</item>
+        <item>Somewhat active</item>
+        <item>Active</item>
+        <item>Very active</item>
     </string-array>
 </resources>
