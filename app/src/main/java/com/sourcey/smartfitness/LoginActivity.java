@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sourcey.user.HashPassword;
+import com.sourcey.user.User;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -107,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("com/sourcey/user", userName);
         setResult(RESULT_OK, intent);
+        new User().setUserEmail(userName);
         finish();
     }
 

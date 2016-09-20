@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     Toolbar toolbar;
+    String UserEmail;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private TextView userName;
     private String[] mNavigationDrawerItemTitles;
@@ -67,16 +68,21 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int position) {
 
         Fragment fragment = null;
+        Bundle bundle = new Bundle();
+        bundle.putString("user", UserEmail);
 
         switch (position) {
             case 0:
                 fragment = new ConnectFragment();
+                fragment.setArguments(bundle);
                 break;
             case 1:
                 fragment = new FixturesFragment();
+                fragment.setArguments(bundle);
                 break;
             case 2:
                 fragment = new TableFragment();
+                fragment.setArguments(bundle);
                 break;
 
             default:
@@ -137,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 userName.setText(data.getStringExtra("com/sourcey/user"));
+                UserEmail = data.getStringExtra("com/sourcey/user");
             }
         }
     }

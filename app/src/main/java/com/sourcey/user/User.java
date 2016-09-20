@@ -2,6 +2,7 @@ package com.sourcey.user;
 
 public class User {
 
+    String UserEmail;
     String Name;
     String Password;
     String Email;
@@ -9,7 +10,11 @@ public class User {
     Double Weight;
     int Age;
 
-    public User(String name, String password, String email, Double height, Double weight, int age) {
+    public User() {
+    }
+
+    public User(String userEmail, String name, String password, String email, Double height, Double weight, int age) {
+        UserEmail = userEmail;
         Name = name;
         Password = password;
         Email = email;
@@ -17,14 +22,21 @@ public class User {
         Weight = weight;
         Age = age;
     }
-
     public User(String password, String email) {
         Password = password;
         Email = email;
     }
 
-    public User() {
+    public User(String UserEmail) {
+        UserEmail = UserEmail;
+    }
 
+    public String getUserEmail() {
+        return UserEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        UserEmail = userEmail;
     }
 
     public String getName() {
