@@ -26,7 +26,7 @@ import java.net.URL;
 
 import static android.content.ContentValues.TAG;
 
-public class TableFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
     EditText ageText;
     EditText heightText;
@@ -35,7 +35,7 @@ public class TableFragment extends Fragment {
 
     String height, weight, age, UserEmail;
 
-    public TableFragment() {
+    public SettingsFragment() {
     }
 
     @Override

@@ -14,15 +14,12 @@ import android.widget.TextView;
 import com.sourcey.neuralnetwork.NeuralNetwork;
 import com.sourcey.smartfitness.R;
 
-/**
- * Created by anupamchugh on 10/12/15.
- */
-public class ConnectFragment extends Fragment {
+public class MealFragment extends Fragment {
     private TextView txtResult;
     private Button validate;
     private Spinner lifeStyle;
 
-    public ConnectFragment() {
+    public MealFragment() {
     }
 
     @Override
@@ -31,7 +28,7 @@ public class ConnectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_connect, container, false);
         txtResult = (TextView) rootView.findViewById(R.id.txt_result);
         validate = (Button) rootView.findViewById(R.id.btn_check);
-        lifeStyle = (Spinner) rootView.findViewById(R.id.gender);
+        lifeStyle = (Spinner) rootView.findViewById(R.id.spin_lifeStyle);
 
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +68,8 @@ public class ConnectFragment extends Fragment {
             try {
                 NeuralNetwork network = new NeuralNetwork();
                 network.train(getActivity());
-                return String.valueOf(network.predict());
+//                return String.valueOf(network.predict());
+                return null;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

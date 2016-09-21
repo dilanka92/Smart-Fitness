@@ -12,13 +12,14 @@
         <item>Workout Plan</item>
         <item>Change My Settings</item>
     </string-array>
-    <string name="life_style">Choose your life style</string>
+    <string name="life_style">Choose your life style     </string>
 
     <string-array name="life_style_array">
-        <item>Sedentary</item>
-        <item>Somewhat active</item>
-        <item>Active</item>
-        <item>Very active</item>
+        <item>Sedentary - Little or no Exerciseb</item>
+        <item>Lightly active - sports 1 – 3 days/ week</item>
+        <item>Moderately active - sports 3 – 5 days/ week</item>
+        <item>Very active - sports 6 – 7 days/ week</item>
+        <item>Extremely active - physical job/ training 2 x/ day</item>
     </string-array>
 
     <string-array name="gender">

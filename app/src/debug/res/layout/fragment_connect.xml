@@ -27,7 +27,7 @@
         tools:ignore="LabelFor" />
 
     <Spinner
-        android:id="@+id/gender"
+        android:id="@+id/spin_lifeStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_result"
@@ -42,8 +42,8 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/gender"
-        android:layout_alignBottom="@+id/gender"
+        android:layout_alignBaseline="@+id/spin_lifeStyle"
+        android:layout_alignBottom="@+id/spin_lifeStyle"
         android:layout_alignStart="@+id/txt_result"
         android:text="@string/life_style"
         android:textSize="15sp"

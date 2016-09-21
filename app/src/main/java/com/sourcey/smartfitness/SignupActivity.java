@@ -65,7 +65,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
-        genders = (Spinner) findViewById(R.id.gender);
+        genders = (Spinner) findViewById(R.id.spin_lifeStyle);
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

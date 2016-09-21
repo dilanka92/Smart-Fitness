@@ -15,11 +15,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.sourcey.fragment.ConnectFragment;
 import com.sourcey.fragment.DataModel;
 import com.sourcey.fragment.DrawerItemCustomAdapter;
-import com.sourcey.fragment.FixturesFragment;
-import com.sourcey.fragment.TableFragment;
+import com.sourcey.fragment.MealFragment;
+import com.sourcey.fragment.SettingsFragment;
+import com.sourcey.fragment.WorkoutFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,15 +73,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                fragment = new ConnectFragment();
+                fragment = new MealFragment();
                 fragment.setArguments(bundle);
                 break;
             case 1:
-                fragment = new FixturesFragment();
+                fragment = new WorkoutFragment();
                 fragment.setArguments(bundle);
                 break;
             case 2:
-                fragment = new TableFragment();
+                fragment = new SettingsFragment();
                 fragment.setArguments(bundle);
                 break;
 

@@ -5,17 +5,6 @@
 
 
     <TextView
-        android:id="@+id/label"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
-        android:text="Fixtures"
-        android:textSize="45dp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/textView2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -23,8 +12,74 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-        android:text="Edit fragment_fixtures.xml to change the appearance"
-        android:textSize="12dp" />
+        android:text="Your Total Daily Energy Expenditure (TDEE) is"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Toolbar.Subtitle" />
+
+    <Button
+        android:id="@+id/btn_calculateTDEE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="17dp"
+        android:text="Calculate" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btn_calculateTDEE"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="14dp"
+        android:layout_marginStart="12dp"
+        android:text="Calculate daily energy expenditure" />
+
+    <TextView
+        android:id="@+id/lbl_TDEE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btn_calculateTDEE"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="casual"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/spin_lifeStyle"
+        android:layout_alignBottom="@+id/spin_lifeStyle"
+        android:layout_alignStart="@+id/textView7"
+        android:text="@string/life_style" />
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="226dp"
+        android:gravity="center_horizontal"
+        android:text="Workout"
+        android:textSize="45dp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spin_lifeStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_calculateTDEE"
+        android:layout_marginBottom="15dp"
+        android:layout_toEndOf="@+id/textView3"
+        android:entries="@array/life_style_array"
+        android:popupBackground="#E12929"
+        android:prompt="@string/life_style"
+        android:spinnerMode="dropdown" />
 
 
 </RelativeLayout>
