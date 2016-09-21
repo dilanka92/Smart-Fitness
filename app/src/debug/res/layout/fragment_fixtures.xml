@@ -4,17 +4,6 @@
     android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/label"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Your Total Daily Energy Expenditure (TDEE) is"
-        android:textAppearance="@android:style/TextAppearance.Material.Widget.Toolbar.Subtitle" />
-
     <Button
         android:id="@+id/btn_calculateTDEE"
         android:layout_width="wrap_content"
@@ -34,19 +23,6 @@
         android:layout_marginBottom="14dp"
         android:layout_marginStart="12dp"
         android:text="Calculate daily energy expenditure" />
-
-    <TextView
-        android:id="@+id/lbl_TDEE"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btn_calculateTDEE"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="26dp"
-        android:fontFamily="casual"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <TextView
         android:id="@+id/textView3"
@@ -80,6 +56,28 @@
         android:popupBackground="#E12929"
         android:prompt="@string/life_style"
         android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/label"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:text="Your Total Daily Energy Expenditure (TDEE) is"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Toolbar.Subtitle" />
+
+    <TextView
+        android:id="@+id/lbl_TDEE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:fontFamily="casual"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
 
 </RelativeLayout>

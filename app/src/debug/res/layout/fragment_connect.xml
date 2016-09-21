@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,45 +8,54 @@
         android:id="@+id/btn_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/label"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="17dp"
-        android:text="Check Connection" />
-
-    <EditText
-        android:id="@+id/txt_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/btn_check"
-        android:layout_below="@+id/btn_check"
-        android:layout_marginTop="9dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        tools:ignore="LabelFor" />
-
-    <Spinner
-        android:id="@+id/spin_lifeStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_result"
-        android:layout_marginTop="44dp"
-        android:layout_toEndOf="@+id/btn_check"
-        android:entries="@array/life_style_array"
-        android:popupBackground="#E12929"
-        android:prompt="@string/life_style"
-        android:spinnerMode="dropdown" />
+        android:layout_above="@+id/textView4"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="23dp"
+        android:text="Calculate" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/lbl_BMR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/spin_lifeStyle"
-        android:layout_alignBottom="@+id/spin_lifeStyle"
-        android:layout_alignStart="@+id/txt_result"
-        android:text="@string/life_style"
-        android:textSize="15sp"
-        tools:text="@string/life_style" />
+        android:layout_below="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:fontFamily="casual"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView6"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Your Total Daily Energy Requirement is"
+        android:textAppearance="@android:style/TextAppearance.Material.Widget.Toolbar.Subtitle" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="213dp"
+        android:gravity="center_horizontal"
+        android:text="Intake"
+        android:textSize="45dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_check"
+        android:layout_alignBottom="@+id/btn_check"
+        android:layout_marginEnd="14dp"
+        android:layout_toStartOf="@+id/btn_check"
+        android:text="Calculate Your Daily Energy Need" />
 
 </RelativeLayout>

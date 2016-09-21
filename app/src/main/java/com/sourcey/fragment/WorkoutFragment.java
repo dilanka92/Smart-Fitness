@@ -68,7 +68,7 @@ public class WorkoutFragment extends Fragment {
     }
 
     private void setData(String tdee) {
-        result.setText(tdee);
+        result.setText(tdee + " kcal");
     }
 
     private boolean addToDataSet(double weight, double height, int age, String gender, double bmr) {

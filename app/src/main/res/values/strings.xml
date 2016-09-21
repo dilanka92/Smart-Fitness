@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Smart Fitness</string>
 
-    <string name="hello_welcome">"Welcome! "</string>
+    <string name="hello_welcome">"Hi! "</string>
     <string name="user_name">User</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open navigation drawer</string>
