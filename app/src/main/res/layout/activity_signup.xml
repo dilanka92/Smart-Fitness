@@ -66,12 +66,26 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
+        <!-- Life Style -->
+        <Spinner
+            android:id="@+id/gender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="0.05"
+            android:entries="@array/gender"
+            android:hint="Gender"
+            android:popupBackground="#E12929"
+            android:prompt="@string/life_style"
+            android:spinnerMode="dropdown" />
+
         <!-- Age Label -->
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="10dp">
 
             <EditText
                 android:id="@+id/input_age"
@@ -111,20 +125,6 @@
                 android:inputType="numberDecimal" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- LifeStyle Label
-        <android.widget.Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_lifestyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:hint="LifeStyle" />
-        </android.widget.Spinner> -->
-
-        <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_signup"
             android:layout_width="fill_parent"

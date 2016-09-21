@@ -31,7 +31,7 @@ public class ConnectFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_connect, container, false);
         txtResult = (TextView) rootView.findViewById(R.id.txt_result);
         validate = (Button) rootView.findViewById(R.id.btn_check);
-        lifeStyle = (Spinner) rootView.findViewById(R.id.lifeStyle);
+        lifeStyle = (Spinner) rootView.findViewById(R.id.gender);
 
         validate.setOnClickListener(new View.OnClickListener() {
             @Override

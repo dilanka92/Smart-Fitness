@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,24 +47,25 @@ public class SignupActivity extends AppCompatActivity {
     Button _signupButton;
     @Bind(R.id.link_login)
     TextView _loginLink;
+    private Spinner genders;
 
-    String name;
-    String email;
-    String password;
-    Double height;
-    Double weight;
-    int age;
-    int userType = 1;
+    private String name;
+    private String gender;
+    private String email;
+    private String password;
+    private Double height;
+    private Double weight;
+    private int age;
 
 
-    HashPassword MD5 = new HashPassword();
+    private HashPassword MD5 = new HashPassword();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
-
+        genders = (Spinner) findViewById(R.id.gender);
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void signup() {
+    private void signup() {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
@@ -100,8 +102,7 @@ public class SignupActivity extends AppCompatActivity {
         age = Integer.parseInt(_ageText.getText().toString());
         height = Double.parseDouble(_heightText.getText().toString());
         weight = Double.parseDouble(_weightText.getText().toString());
-
-
+        gender = genders.getSelectedItem().toString();
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -112,22 +113,22 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    public void onSignupSuccess() {
+    private void onSignupSuccess() {
         _signupButton.setEnabled(true);
         Intent intent = new Intent();
-        intent.putExtra("com/sourcey/user", name);
+        intent.putExtra("com/sourcey/user", email);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    public void onSignupFailed() {
+    private void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Registration failed", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Registration failed");
 
         _signupButton.setEnabled(true);
     }
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
@@ -176,21 +177,15 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             _weightText.setError(null);
         }
-//        if (lifestyle.isEmpty()) {
-//            ((TextView)_input_lifestyleText.getSelectedView()).setError("select lifestyle");
-//            valid = false;
-//        } else {
-//           // _input_lifestyleText.setError(null);
-//            ((TextView)_input_lifestyleText.getSelectedView()).setError(null);
-//        }
 
         return valid;
     }
 
     private void registerUser() {
         String hashPassword = MD5.Hash(password);
+        int userType = 1;
         new asyncSignup().execute(email, hashPassword, name, String.valueOf(userType),
-                String.valueOf(age), String.valueOf(weight), String.valueOf(height));
+                String.valueOf(age), String.valueOf(weight), String.valueOf(height), gender);
     }
 
     private class asyncSignup extends AsyncTask<String, Void, String> {
@@ -216,6 +211,7 @@ public class SignupActivity extends AppCompatActivity {
                 String age = arg0[4];
                 String weight = arg0[5];
                 String height = arg0[6];
+                String gender = arg0[7];
                 String link = "http://192.168.1.92/ServiceFitness/newUser.php";
                 URL url = new URL(link);
 
@@ -237,7 +233,8 @@ public class SignupActivity extends AppCompatActivity {
                         .appendQueryParameter("name", name)
                         .appendQueryParameter("age", age)
                         .appendQueryParameter("weight", weight)
-                        .appendQueryParameter("height", height);
+                        .appendQueryParameter("height", height)
+                        .appendQueryParameter("gender", gender);
                 String query = builder.build().getEncodedQuery();
 
                 // Open connection for sending data
