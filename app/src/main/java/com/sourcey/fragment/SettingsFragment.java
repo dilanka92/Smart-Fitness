@@ -28,12 +28,10 @@ import static android.content.ContentValues.TAG;
 
 public class SettingsFragment extends Fragment {
 
-    EditText ageText;
-    EditText heightText;
-    EditText weightText;
-    Button update_button;
+    private EditText ageText, heightText, weightText;
+    private Button update_button;
 
-    String height, weight, age, UserEmail;
+    private String height, weight, age, UserEmail;
 
     public SettingsFragment() {
     }
@@ -41,7 +39,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_table, container, false);
+        View rootView = inflater.inflate(R.layout.settings_fragment, container, false);
 
         ageText = (EditText) rootView.findViewById(R.id.input_age);
         weightText = (EditText) rootView.findViewById(R.id.input_weight);
@@ -59,7 +57,7 @@ public class SettingsFragment extends Fragment {
         return rootView;
     }
 
-    public void update() {
+    private void update() {
         Log.d(TAG, "update");
 
         if (!validate()) {
@@ -69,13 +67,13 @@ public class SettingsFragment extends Fragment {
 
         update_button.setEnabled(false);
         age = ageText.getText().toString();
-        height = weightText.getText().toString();
-        weight = heightText.getText().toString();
+        height = heightText.getText().toString();
+        weight = weightText.getText().toString();
 
         updateUser();
     }
 
-    public boolean validate() {
+    private boolean validate() {
         boolean valid = true;
 
         age = ageText.getText().toString();
@@ -83,29 +81,34 @@ public class SettingsFragment extends Fragment {
         weight = heightText.getText().toString();
 
         if (age.isEmpty()) {
-            Toast.makeText(getActivity(), "enter age", Toast.LENGTH_LONG).show();
+            ageText.setError("Enter age");
             valid = false;
+        } else {
+            ageText.setError(null);
         }
         if (height.isEmpty()) {
-
-            Toast.makeText(getActivity(), "enter height", Toast.LENGTH_LONG).show();
+            heightText.setError("Enter height");
             valid = false;
+        } else {
+            heightText.setError(null);
         }
         if (weight.isEmpty()) {
-            Toast.makeText(getActivity(), "enter weight", Toast.LENGTH_LONG).show();
+            weightText.setError("Enter weight");
             valid = false;
+        } else {
+            weightText.setError(null);
         }
 
         return valid;
     }
 
-    public void onUpdateSuccess() {
+    private void onUpdateSuccess() {
         Toast.makeText(getActivity(), "Update success", Toast.LENGTH_LONG).show();
         update_button.setEnabled(true);
 
     }
 
-    public void onUpdateFailed() {
+    private void onUpdateFailed() {
         Toast.makeText(getActivity(), "Update failed", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Update failed");
 
@@ -113,10 +116,10 @@ public class SettingsFragment extends Fragment {
     }
 
     private void updateUser() {
-        new asyncUpdate().execute(age, weight, height, UserEmail);
+        new SettingsASYNC().execute(age, weight, height, UserEmail);
     }
 
-    private class asyncUpdate extends AsyncTask<String, Void, String> {
+    private class SettingsASYNC extends AsyncTask<String, Void, String> {
 
         final ProgressDialog progressDialog = new ProgressDialog(getActivity(), R.style.AppTheme_Dark_Dialog);
         HttpURLConnection conn;
@@ -200,7 +203,7 @@ public class SettingsFragment extends Fragment {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            System.out.println("Result --- " + result);
+            Log.i(TAG, "Result --- " + result);
 
             if (!result.equals(0)) {
                 onUpdateSuccess();

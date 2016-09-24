@@ -1,5 +1,7 @@
 package com.sourcey.user;
 
+import android.util.Log;
+
 import java.security.MessageDigest;
 
 public class HashPassword {
@@ -17,8 +19,8 @@ public class HashPassword {
             }
             return sb.toString();
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            Log.getStackTraceString(e);
             return null;
         }
     }

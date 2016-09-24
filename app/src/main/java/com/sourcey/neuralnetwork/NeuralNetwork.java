@@ -1,6 +1,7 @@
 package com.sourcey.neuralnetwork;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,12 +24,13 @@ import static com.sourcey.user.MySqlHandler.USER;
 
 
 public class NeuralNetwork {
+    private static final String TAG = "NeuralNetwork";
     private final static String FILENAME = "example.save";
     private File file;
 
     public void train(Context context) throws Exception {
         try {
-            System.out.println("Training...");
+            Log.i(TAG, "Training...");
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();
 
@@ -57,23 +59,23 @@ public class NeuralNetwork {
 
             fos.flush();
             fos.close();
-            System.out.println("Training finished!");
+            Log.i(TAG, "Training finished!");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.getStackTraceString(e);
         }
 
     }
 
     public double predict(double weight, double height, int age, String gender) throws Exception {
-        System.out.println("Predicting...");
+        Log.i(TAG, "Predicting...");
         String sql;
+        double valueBMI = 0.0;
         try {
             if ("Male".equalsIgnoreCase(gender)) {
                 sql = "SELECT * FROM male_bmr WHERE `Weight`=" + weight + " AND `Height`=" + height + " AND `Age`=" + age + "";
             } else {
                 sql = "SELECT * FROM female_bmr WHERE `Weight`=" + weight + " AND `Height`=" + height + " AND `Age`=" + age + "";
             }
-            double predVal = 0.0;
             // load data from database that needs predicting
             InstanceQuery query = new InstanceQuery();
             query.setDatabaseURL(URL);
@@ -90,14 +92,9 @@ public class NeuralNetwork {
             Instances header = (Instances) v.get(1);
 
             // output predictions
-            System.out.println("actual -> predicted");
+            Log.i(TAG, "actual -> predicted");
             for (int i = 0; i < data.numInstances(); i++) {
                 Instance curr = data.instance(i);
-                // create an instance for the classifier that fits the training data
-                // Instances object returned here might differ slightly from the one
-                // used during training the classifier, e.g., different order of
-                // nominal values, different number of attributes.
-                // Instance inst = new Instance(header.numAttributes());
                 Instance inst = new DenseInstance(header.numAttributes());
                 inst.setDataset(header);
                 for (int n = 0; n < header.numAttributes(); n++) {
@@ -105,9 +102,7 @@ public class NeuralNetwork {
                     // original attribute is also present in the current dataset
                     if (att != null) {
                         if (att.isNominal()) {
-                            // is this label also in the original data?
-                            // Note:
-                            // "numValues() > 0" is only used to avoid problems with nominal
+                            // "att != null" is only used to avoid problems with nominal
                             // attributes that have 0 labels, which can easily happen with
                             // data loaded from a database
                             if ((header.attribute(n).numValues() > 0) && (att.numValues() > 0)) {
@@ -120,22 +115,20 @@ public class NeuralNetwork {
                         } else if (att.isNumeric()) {
                             inst.setValue(n, curr.value(att));
                         } else {
-                            throw new IllegalStateException("Unhandled attribute type!");
+                            Log.e(TAG, "Unhandled attribute type!");
                         }
                     }
                 }
-
                 // predict class
-                double pred = cl.classifyInstance(inst);
-                predVal = pred;
-                System.out.println(inst.classValue() + " -> " + pred);
+                double predictedBMI = cl.classifyInstance(inst);
+                valueBMI = predictedBMI;
+                Log.i(TAG, inst.classValue() + " -> " + predictedBMI);
             }
-
-            System.out.println("Predicting finished!");
-            return predVal;
+            Log.i(TAG, "Predicting finished!");
+            return valueBMI;
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0.0;
+            Log.getStackTraceString(e);
+            return valueBMI;
         }
     }
 }

@@ -32,23 +32,23 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     @Bind(R.id.input_name)
-    EditText _nameText;
+    EditText nameText;
     @Bind(R.id.input_email)
-    EditText _emailText;
+    EditText emailText;
     @Bind(R.id.input_age)
-    EditText _ageText;
+    EditText ageText;
     @Bind(R.id.input_height)
-    EditText _heightText;
+    EditText heightText;
     @Bind(R.id.input_weight)
-    EditText _weightText;
+    EditText weightText;
     @Bind(R.id.input_password)
-    EditText _passwordText;
+    EditText passwordText;
     @Bind(R.id.btn_signup)
-    Button _signupButton;
+    Button signupButton;
     @Bind(R.id.link_login)
     TextView _loginLink;
-    private Spinner genders;
 
+    private Spinner genders;
     private String name;
     private String gender;
     private String email;
@@ -66,10 +66,10 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
         genders = (Spinner) findViewById(R.id.spin_lifeStyle);
-        _signupButton.setOnClickListener(new View.OnClickListener() {
+        signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                signUp();
             }
         });
 
@@ -81,27 +81,27 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void signup() {
-        Log.d(TAG, "Signup");
+    private void signUp() {
+        Log.d(TAG, "SignUp");
 
         if (!validate()) {
             onSignupFailed();
             return;
         }
 
-        _signupButton.setEnabled(false);
+        signupButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        name = _nameText.getText().toString();
-        email = _emailText.getText().toString();
-        password = _passwordText.getText().toString();
-        age = Integer.parseInt(_ageText.getText().toString());
-        height = Double.parseDouble(_heightText.getText().toString());
-        weight = Double.parseDouble(_weightText.getText().toString());
+        name = nameText.getText().toString();
+        email = emailText.getText().toString();
+        password = passwordText.getText().toString();
+        age = Integer.parseInt(ageText.getText().toString());
+        height = Double.parseDouble(heightText.getText().toString());
+        weight = Double.parseDouble(weightText.getText().toString());
         gender = genders.getSelectedItem().toString();
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -113,8 +113,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    private void onSignupSuccess() {
-        _signupButton.setEnabled(true);
+    private void onSignUpSuccess() {
+        signupButton.setEnabled(true);
         Intent intent = new Intent();
         intent.putExtra("com/sourcey/user", email);
         setResult(RESULT_OK, intent);
@@ -125,57 +125,57 @@ public class SignupActivity extends AppCompatActivity {
         Toast.makeText(getBaseContext(), "Registration failed", Toast.LENGTH_LONG).show();
         Log.i(TAG, "Registration failed");
 
-        _signupButton.setEnabled(true);
+        signupButton.setEnabled(true);
     }
 
     private boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String age = _ageText.getText().toString();
-        String height = _heightText.getText().toString();
-        String weight = _weightText.getText().toString();
+        String name = nameText.getText().toString();
+        String email = emailText.getText().toString();
+        String password = passwordText.getText().toString();
+        String age = ageText.getText().toString();
+        String height = heightText.getText().toString();
+        String weight = weightText.getText().toString();
 
 
         if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+            nameText.setError("At least 3 characters");
             valid = false;
         } else {
-            _nameText.setError(null);
+            nameText.setError(null);
         }
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            emailText.setError("Enter a valid email address");
             valid = false;
         } else {
-            _emailText.setError(null);
+            emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("Between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
-            _passwordText.setError(null);
+            passwordText.setError(null);
         }
         if (age.isEmpty()) {
-            _ageText.setError("enter age");
+            ageText.setError("Enter age");
             valid = false;
         } else {
-            _ageText.setError(null);
+            ageText.setError(null);
         }
         if (height.isEmpty()) {
-            _heightText.setError("enter height");
+            heightText.setError("Enter height");
             valid = false;
         } else {
-            _heightText.setError(null);
+            heightText.setError(null);
         }
         if (weight.isEmpty()) {
-            _weightText.setError("enter weight");
+            weightText.setError("Enter weight");
             valid = false;
         } else {
-            _weightText.setError(null);
+            weightText.setError(null);
         }
 
         return valid;
@@ -184,11 +184,11 @@ public class SignupActivity extends AppCompatActivity {
     private void registerUser() {
         String hashPassword = MD5.Hash(password);
         int userType = 1;
-        new asyncSignup().execute(email, hashPassword, name, String.valueOf(userType),
+        new SignUpASYNC().execute(email, hashPassword, name, String.valueOf(userType),
                 String.valueOf(age), String.valueOf(weight), String.valueOf(height), gender);
     }
 
-    private class asyncSignup extends AsyncTask<String, Void, String> {
+    private class SignUpASYNC extends AsyncTask<String, Void, String> {
 
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this, R.style.AppTheme_Dark_Dialog);
         HttpURLConnection conn;
@@ -260,12 +260,9 @@ public class SignupActivity extends AppCompatActivity {
                     while ((line = reader.readLine()) != null) {
                         result.append(line);
                     }
-
                     // Pass data to onPostExecute method
                     return (result.toString());
-
                 } else {
-
                     return ("false");
                 }
 
@@ -273,7 +270,6 @@ public class SignupActivity extends AppCompatActivity {
                 return ("false");
             }
         }
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -283,12 +279,10 @@ public class SignupActivity extends AppCompatActivity {
             System.out.println("Result --- " + result);
 
             if (!result.equals("false")) {
-                onSignupSuccess();
+                onSignUpSuccess();
             } else {
                 onSignupFailed();
-
             }
-
         }
     }
 }

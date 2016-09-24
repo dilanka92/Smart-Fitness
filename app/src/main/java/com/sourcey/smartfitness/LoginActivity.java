@@ -145,11 +145,11 @@ public class LoginActivity extends AppCompatActivity {
         // hash password
         HashPassword MD5 = new HashPassword();
         String hashPassword = MD5.Hash(password);
-        new asyncLogin().execute(email, hashPassword);
+        new LoginASYNC().execute(email, hashPassword);
     }
 
 
-    private class asyncLogin extends AsyncTask<String, Void, String> {
+    private class LoginASYNC extends AsyncTask<String, Void, String> {
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_Dark_Dialog);
         HttpURLConnection conn;
@@ -223,7 +223,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-
         @Override
         protected void onPostExecute(String result) {
             if (progressDialog.isShowing()) {
@@ -235,7 +234,6 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 onLoginFailed();
             }
-
         }
     }
 }

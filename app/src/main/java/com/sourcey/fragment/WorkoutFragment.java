@@ -29,9 +29,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class WorkoutFragment extends Fragment {
-    private Button calculate;
     private TextView result;
     private Spinner lifeStyles;
 
@@ -44,9 +44,9 @@ public class WorkoutFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_fixtures, container, false);
+        View rootView = inflater.inflate(R.layout.workout_fragment, container, false);
 
-        calculate = (Button) rootView.findViewById(R.id.btn_calculateTDEE);
+        Button calculate = (Button) rootView.findViewById(R.id.btn_calculateTDEE);
         result = (TextView) rootView.findViewById(R.id.lbl_TDEE);
         lifeStyles = (Spinner) rootView.findViewById(R.id.spin_lifeStyle);
 
@@ -57,7 +57,7 @@ public class WorkoutFragment extends Fragment {
             public void onClick(View v) {
                 try {
                     id = String.valueOf(lifeStyles.getSelectedItemId());
-                    new tdeeASYNC().execute(id, userEmail);
+                    new WorkoutASYNC().execute(id, userEmail);
                 } catch (Exception e) {
                     System.err.println("Ouch An Error");
                     e.printStackTrace();
@@ -67,8 +67,8 @@ public class WorkoutFragment extends Fragment {
         return rootView;
     }
 
-    private void setData(String tdee) {
-        result.setText(tdee + " kcal");
+    private void setData(String valTDEE) {
+        result.setText(valTDEE + " kcal");
     }
 
     private boolean addToDataSet(double weight, double height, int age, String gender, double bmr) {
@@ -121,10 +121,9 @@ public class WorkoutFragment extends Fragment {
                     result.append(line);
                 }
 
-
                 // Pass data to onPostExecute method
                 if (Boolean.valueOf(result.toString())) {
-                    status = addToTestDataSet(weight, height, age, gender, bmr);
+                    status = addToTestDataSet(weight, height, age, gender);
                 }
                 return status;
             } else {
@@ -137,7 +136,7 @@ public class WorkoutFragment extends Fragment {
         }
     }
 
-    private boolean addToTestDataSet(double weight, double height, int age, String gender, double bmr) {
+    private boolean addToTestDataSet(double weight, double height, int age, String gender) {
         System.out.println("Adding to test data set");
         try {
             String link = "http://192.168.1.92/ServiceFitness/addToTestDataSet.php";
@@ -204,8 +203,8 @@ public class WorkoutFragment extends Fragment {
         }
     }
 
-    private class tdeeASYNC extends AsyncTask<String, Void, String> {
-        private static final String TAG = "Async TDEE";
+    private class WorkoutASYNC extends AsyncTask<String, Void, String> {
+        private static final String TAG = "WorkoutASYNC";
         final ProgressDialog progressDialog = new ProgressDialog(getActivity(), R.style.AppTheme_Dark_Dialog);
         HttpURLConnection conn;
 
@@ -291,9 +290,9 @@ public class WorkoutFragment extends Fragment {
                         if (Looper.myLooper() == null)
                             Looper.prepare();
                         if ("Male".equalsIgnoreCase(gender)) {
-                            bmr = (10 * (weight) + 6.25 * (height) - 5 * age - 161);
-                        } else {
                             bmr = (10 * (weight) + 6.25 * (height) - 5 * age + 5);
+                        } else {
+                            bmr = (10 * (weight) + 6.25 * (height) - 5 * age - 161);
                         }
                         boolean status = addToDataSet(weight, height, age, gender, bmr);
                         if (status) {
@@ -335,7 +334,7 @@ public class WorkoutFragment extends Fragment {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if (result == "0.0") {
+            if (Objects.equals(result, "0.0")) {
                 Toast.makeText(getActivity(), "Prediction failed", Toast.LENGTH_LONG).show();
                 Log.i(TAG, "Prediction failed");
             } else {

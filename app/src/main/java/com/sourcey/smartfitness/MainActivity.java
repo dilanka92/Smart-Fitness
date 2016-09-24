@@ -24,8 +24,8 @@ import com.sourcey.fragment.WorkoutFragment;
 public class MainActivity extends AppCompatActivity {
 
 
-    Toolbar toolbar;
-    String UserEmail;
+    private Toolbar toolbar;
+    private String UserEmail;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private TextView userName;
     private String[] mNavigationDrawerItemTitles;
@@ -105,12 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -125,13 +120,13 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
     }
 
-    void setupToolbar() {
+    private void setupToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
-    void setupDrawerToggle() {
+    private void setupDrawerToggle() {
         mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
         //This is necessary to change the icon of the Drawer Toggle upon state change.
         mDrawerToggle.syncState();
